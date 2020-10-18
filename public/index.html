@@ -1,0 +1,31 @@
+<html>
+
+<head>
+  <link rel="icon" type="image/css" href="skeleton/images/favicon.png" />
+  <link rel="stylesheet" href="./skeleton/css/normalize.css" />
+  <link rel="stylesheet" href="./skeleton/css/skeleton.css" />
+  <link rel="stylesheet" href="./skeleton/css/custom.css" />
+  <meta charset="UTF-8">
+  <title>My Aplicación con Sockets</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="main.js"></script>
+</head>
+
+<body>
+  <h1>My App</h1>
+  <div id="messages"></div>
+  <br/>
+  <form onsubmit="return subscribeToNewChannel(this)">
+      <label for="channel-name">Channel name</label><input type="text" id="channel-name" placeholder="Channel Name..." />
+      <input type="submit" value="Subscribe">
+  </form>
+
+  <form onsubmit="return addMessage(this)">
+      <input type="text" id="username" placeholder="Tu Nombre" >
+      <input type="text" id="texto" placeholder="Cuéntanos algo...">
+      <input type="text" id="to" placeholder="Para quien?">
+      <input type="submit" value="Enviar!">
+    </form>
+</body>
+
+</html>
