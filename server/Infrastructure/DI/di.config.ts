@@ -15,6 +15,9 @@ import LoginAdapter from "../../API/Http/Adapters/Auth/LoginAdapter.js";
 import LoginHandler from "../../Application/Queries/Handler/Auth/LoginHandler.js";
 import {TokenService} from "../../Domain/Interfaces/Services/TokenService.js";
 import JWTTokenService from "../../Application/Services/JWTTokenService.js";
+import StoreUserAction from "../../API/Http/Actions/User/StoreUserAction.js";
+import StoreUserAdapter from "../../API/Http/Adapters/User/StoreUserAdapter.js";
+import StoreUserHandler from "../../Application/Commands/Handler/User/StoreUserHandler.js";
 
 const DIContainer = new Container();
 
@@ -28,18 +31,21 @@ DIContainer.bind<PublicRoutes>(PublicRoutes);
  */
 DIContainer.bind<SubscribeToChannelAction>(SubscribeToChannelAction).toSelf();
 DIContainer.bind<LoginAction>(LoginAction).toSelf();
+DIContainer.bind<StoreUserAction>(StoreUserAction).toSelf();
 
 /**
  * Adapters
  */
 DIContainer.bind<SubscribeToChannelAdapter>(SubscribeToChannelAdapter).toSelf();
 DIContainer.bind<LoginAdapter>(LoginAdapter).toSelf();
+DIContainer.bind<StoreUserAdapter>(StoreUserAdapter).toSelf();
 
 /**
  * Handlers
  */
 DIContainer.bind<SubscribeToChannelHandler>(SubscribeToChannelHandler).toSelf();
 DIContainer.bind<LoginHandler>(LoginHandler).toSelf();
+DIContainer.bind<StoreUserHandler>(StoreUserHandler).toSelf();
 
 /**
  * Services

@@ -23,7 +23,7 @@
     "noImplicitThis": false,
     "strictNullChecks": false,
     "rootDir": "./",
-    "outDir": "dist",
+    "outDir": "../dist",
     "removeComments": true,
     "types": ["reflect-metadata"],
     "baseUrl": ".",
