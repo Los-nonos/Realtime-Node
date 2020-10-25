@@ -10,6 +10,11 @@ import MysqlUserRepository from "../Persistence/Repositories/MysqlUserRepository
 import SubscribeToChannelAction from "../../API/Http/Actions/Channels/SubscribeToChannelAction.js";
 import {ValidationService} from "../../API/Http/Validations/Utils/ValidationService.js";
 import JoiValidationService from "../../API/Http/Validations/Utils/joiValidationService.js";
+import LoginAction from "../../API/Http/Actions/Auth/LoginAction.js";
+import LoginAdapter from "../../API/Http/Adapters/Auth/LoginAdapter.js";
+import LoginHandler from "../../Application/Queries/Handler/Auth/LoginHandler.js";
+import {TokenService} from "../../Domain/Interfaces/Services/TokenService.js";
+import JWTTokenService from "../../Application/Services/JWTTokenService.js";
 
 const DIContainer = new Container();
 
@@ -22,22 +27,25 @@ DIContainer.bind<PublicRoutes>(PublicRoutes);
  * Actions
  */
 DIContainer.bind<SubscribeToChannelAction>(SubscribeToChannelAction).toSelf();
-
+DIContainer.bind<LoginAction>(LoginAction).toSelf();
 
 /**
  * Adapters
  */
 DIContainer.bind<SubscribeToChannelAdapter>(SubscribeToChannelAdapter).toSelf();
+DIContainer.bind<LoginAdapter>(LoginAdapter).toSelf();
 
 /**
  * Handlers
  */
 DIContainer.bind<SubscribeToChannelHandler>(SubscribeToChannelHandler).toSelf();
+DIContainer.bind<LoginHandler>(LoginHandler).toSelf();
 
 /**
  * Services
  */
 DIContainer.bind<ValidationService>(INTERFACES.IValidation).to(JoiValidationService);
+DIContainer.bind<TokenService>(INTERFACES.ITokenService).to(JWTTokenService);
 
 /**
  * Repositories

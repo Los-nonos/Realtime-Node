@@ -8,6 +8,10 @@ class MysqlUserRepository extends TypeRepository implements UserRepository {
   public async findOneById(id: number): Promise<User> {
     return await this.repository(User).findOne(id);
   }
+
+  public async findOneByEmail(email: string): Promise<User> {
+    return await this.repository(User).findOne({email});
+  }
 }
 
 export default MysqlUserRepository;
