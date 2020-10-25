@@ -2,7 +2,7 @@ import { Container } from 'inversify';
 import INTERFACES from "./interfaces.types";
 import PublicRoutes from "../../API/Http/Routes";
 import SubscribeToChannelAdapter from "../../API/Http/Adapters/Channels/SubscribeToChannelAdapter.js";
-import SubscribeToChannelHandler from "../../Application/Commands/Handler/SubscribeToChannelHandler.js";
+import SubscribeToChannelHandler from "../../Application/Commands/Handler/Channels/SubscribeToChannelHandler.js";
 import {ChannelRepository} from "../../Domain/Interfaces/Repositories/ChannelRepository.js";
 import MysqlChannelRepository from "../Persistence/Repositories/MysqlChannelRepository.js";
 import {UserRepository} from "../../Domain/Interfaces/Repositories/UserRepository.js";

@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 import SubscribeToChannelAdapter from "../../Adapters/Channels/SubscribeToChannelAdapter.js";
 import {inject, injectable} from "inversify";
-import SubscribeToChannelHandler from "../../../../Application/Commands/Handler/SubscribeToChannelHandler.js";
+import SubscribeToChannelHandler from "../../../../Application/Commands/Handler/Channels/SubscribeToChannelHandler.js";
 
 @injectable()
 class SubscribeToChannelAction {
