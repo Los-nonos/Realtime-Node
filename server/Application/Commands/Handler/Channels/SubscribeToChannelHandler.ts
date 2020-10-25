@@ -3,6 +3,7 @@ import {inject, injectable} from "inversify";
 import INTERFACES from "../../../../Infrastructure/DI/interfaces.types.js";
 import {ChannelRepository} from "../../../../Domain/Interfaces/Repositories/ChannelRepository.js";
 import {UserRepository} from "../../../../Domain/Interfaces/Repositories/UserRepository.js";
+import Channel from "../../../../Domain/Entities/Channel.js";
 
 @injectable()
 class SubscribeToChannelHandler {
@@ -16,14 +17,14 @@ class SubscribeToChannelHandler {
     this.userRepository = userRepository;
   }
 
-  public async execute(command: SubscribeToChannelCommand) {
+  public async execute(command: SubscribeToChannelCommand): Promise<Channel> {
     const user = await this.userRepository.findOneById(command.getUserId());
 
     const channel = await this.channelRepository.findOneById(command.getChannelId());
 
     channel.addUser(user);
 
-    await this.channelRepository.persist(channel);
+    return await this.channelRepository.persist(channel);
   }
 }
 

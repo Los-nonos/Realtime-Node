@@ -19,6 +19,18 @@ class Message {
   public getChannelName(): string {
     return this.channel.getName();
   }
+
+  public getChannelMessages() {
+    const contents = [];
+    for (const messages of this.channel.getMessages()) {
+      contents.push(messages.getContent());
+    }
+    return contents;
+  }
+
+  public getChannel() {
+    return this.channel;
+  }
 }
 
 export default Message;
