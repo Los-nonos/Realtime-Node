@@ -37,6 +37,12 @@ app.get('/hello', function(req, res) {
   res.status(200).json(channel);
 });
 
+class PublicRoutes {
+  public getRoutes() {
+
+  }
+}
+
 io.sockets.on('connection', function(socket) {
   console.log('Alguien se ha conectado con Sockets');
   socket.emit('general', channels[0].messages);
@@ -83,3 +89,5 @@ io.sockets.on('connection', function(socket) {
 server.listen(8080, function() {
   console.log("Servidor corriendo en http://localhost:8080");
 });
+
+export default PublicRoutes;
