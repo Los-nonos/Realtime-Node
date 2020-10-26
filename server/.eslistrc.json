@@ -1,0 +1,49 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "extends": [
+    "google",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended", // Uses the recommended rules from the @typescript-eslint/eslint-plugin
+    "prettier/@typescript-eslint", // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier
+    "plugin:prettier/recommended"
+  ],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 2018
+  },
+  "settings": {
+    "react": {
+      "version": "^16.8.4"
+    }
+  },
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["react", "eslint-plugin-typescript"],
+  "rules": {
+    "react/display-name": "off",
+    "indent": "off",
+    "@typescript-eslint/indent": "off",
+    "camelcase": "off",
+    "@typescript-eslint/camelcase": ["warn"],
+    "require-jsdoc": 0,
+    "no-invalid-this": "off",
+    "valid-jsdoc": [
+      1,
+      {
+        "requireReturnDescription": false,
+        "requireParamDescription": false
+      }
+    ],
+    "react/jsx-uses-vars": [2],
+    "@typescript-eslint/prefer-interface": false
+  }
+}

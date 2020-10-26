@@ -1,4 +1,4 @@
-const socket = io.connect('http://localhost:8080', {'forceNew': true});
+const socket = io.connect('http://localhost:3002', {'forceNew': true});
 
 let author = '';
 
