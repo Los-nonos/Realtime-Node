@@ -1,11 +1,11 @@
 const express = require('express');
-const index = express();
+const app = express();
 
-let server = require('http').Server(index);
+let server = require('http').Server(app);
 
-index.use(express.static('public'));
+app.use(express.static('../public'));
 
-index.get('/hello', (_req, res) => {
+app.get('/hello', (_req, res) => {
     res.send('Hola');
 })
 
