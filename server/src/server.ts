@@ -11,7 +11,7 @@ class Server {
 
   constructor() {
     this.express = express();
-    this.http = new http.Server(express);
+    this.http = new http.Server(this.express);
     this.app = new App(this.express, this.http);
 
     const PORT = process.env.PORT || 3002;

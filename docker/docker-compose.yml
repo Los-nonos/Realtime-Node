@@ -29,6 +29,16 @@ services:
     working_dir: /usr/src/service/server
     command: 'yarn start'
 
+  client:
+    image: node:10.15
+    hostname: client
+    ports:
+      - '3003:3003'
+    volumes:
+      - ../:/usr/src/service
+    working_dir: /usr/src/service/client
+    command: yarn start
+
   adminer:
     image: adminer
     ports:

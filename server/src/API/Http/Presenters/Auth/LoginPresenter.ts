@@ -9,8 +9,11 @@ class LoginPresenter {
 
   public getData(): any {
     return {
-      id: this.result.getUser().getId(),
       token: this.result.getToken(),
+      user: {
+        id: this.result.getUser().getId(),
+        roles: [],
+      }
     };
   }
 }

@@ -19,7 +19,7 @@ class LoginAdapter {
     }
 
     return new LoginQuery(
-      body.email,
+      body.username,
       body.password
     );
   }

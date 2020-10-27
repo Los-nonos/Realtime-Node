@@ -1,19 +1,23 @@
+import ErrorPage from "../containers/Error/ErrorPage";
+import {Chat} from "@material-ui/icons";
+import ChatComponent from '../containers/Chat';
+
 const dashboardRoutes = [
     {
         path: "/error",
         name: "Error",
-        icon: Login,
+        icon: '',
         component: ErrorPage,
         layout: "/auth",
         rol: []
     },
     {
-        path: "/user-account",
-        name: "CUENTA",
-        icon: Settings,
-        component: UserAccount,
-        layout: "/dashboard",
-        rol: []
+        path: '/chat',
+        name: `Chat`,
+        icon: Chat,
+        component: ChatComponent,
+        layout: '/dashboard',
+        rol: [],
     }
 ];
 

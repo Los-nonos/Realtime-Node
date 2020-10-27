@@ -4,15 +4,15 @@ import { actionNames } from "../../utils/constants/actionConstants";
 class AuthAdapter {
     login = response => {
         const { status, data } = response;
-
+        console.log(data);
         if (!isError(status)) {
-            const { token } = data;
+            const { token, user } = data.data;
             delete data.token;
 
             return {
                 type: actionNames.loggedIn,
                 token,
-                user: data.user
+                user
             };
         }
         const { code, error } = data;

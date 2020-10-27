@@ -25,7 +25,7 @@ class PublicRoutes {
       res.send('hola');
     });
 
-    this.router.post('/login', asyncMiddleware(async (req: Request, res: Response) => await this.loginAction.execute(req, res)));
+    this.router.post('/auth/login', asyncMiddleware(async (req: Request, res: Response) => await this.loginAction.execute(req, res)));
 
     this.router.post('/register', asyncMiddleware(async (req: Request, res: Response) => await this.storeUserAction.execute(req, res)))
   }

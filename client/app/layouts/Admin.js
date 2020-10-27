@@ -60,7 +60,7 @@ class Admin extends React.Component {
     checkRoles() {
         const roles = authStorageService.getRoles();
         if (!roles) {
-            redirectTo(pages.error);
+            //redirectTo(pages.error);
             return [];
         } else {
             return roles.split(",");

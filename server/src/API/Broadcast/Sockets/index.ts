@@ -9,8 +9,11 @@ import GetGeneralChannelAction from "../Actions/Channels/GetGeneralChannelAction
 class Sockets {
   private app: any;
   private io: any;
+  // @ts-ignore
   private subscribeToChannel: SubscribeToChannelAction;
+  // @ts-ignore
   private storeMessage: StoreMessageAction;
+  // @ts-ignore
   private generalChannel: GetGeneralChannelAction;
 
   constructor(
@@ -27,38 +30,38 @@ class Sockets {
   public up(http: any) {
     this.app = http;
     this.io = new IOSockets(this.app);
-    this.io.sockets.on('connection', this.onConnection);
+    this.io.sockets.on('connection', (socket) => this.onConnection(socket, this));
   }
 
-  private onConnection(socket) {
+  private onConnection(socket, context) {
     console.log('Alguien se ha conectado con Sockets');
-    this.generalChannel.execute().then(result => {
+    context.generalChannel.execute().then(result => {
       socket.emit('general', result.getMessages());
     }).catch(error => {
       socket.emit('general', error);
     });
 
 
-    socket.on('subscribe', (room) => this.Subscribe(room, socket));
+    socket.on('subscribe', (room) => this.Subscribe(room, socket, context));
 
-    socket.on('new-message', this.NewMessage);
+    socket.on('new-message', (data) => this.NewMessage(data, context));
   }
 
-  private Subscribe(room, socket) {
+  private Subscribe(room, socket, context) {
     console.log("Joining to room ", room);
-    this.subscribeToChannel.execute(room).then(channel => {
+    context.subscribeToChannel.execute(room).then(channel => {
       socket.join(channel);
     }).catch(error => {
       socket.emit('An error has occurred', error);
     });
   }
 
-  private NewMessage(data) {
-    this.storeMessage.execute(data).then(result => {
+  private NewMessage(data, context) {
+    context.storeMessage.execute(data).then(result => {
       if (result.getChannel().isPrivate()) {
-        this.io.sockets.emit('general', result.getChannelMessages());
+        context.io.sockets.emit('general', result.getChannelMessages());
       } else {
-        this.io.sockets.in(result.getChannelName()).emit('private-message', result.getChannelMessages());
+        context.io.sockets.in(result.getChannelName()).emit('private-message', result.getChannelMessages());
       }
     }).catch(error => {
       console.error('An error has ocurred', error);

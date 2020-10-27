@@ -21,7 +21,7 @@ const Sidebar = ({ ...props }) => {
   }
 
   function isRoleValid(roles, userRoles) {
-    if (roles === []) {
+    if (!roles.length) {
       return true;
     }
 
@@ -40,17 +40,9 @@ const Sidebar = ({ ...props }) => {
       {routes.map((prop, key) => {
         if (isRoleValid(prop.rol, userRoles) && prop.layout === "/dashboard") {
           let activePro = " ";
-          let listItemClasses;
-          if (prop.path === "/upgrade-to-pro") {
-            activePro = classes.activePro + " ";
-            listItemClasses = classNames({
-              [" " + classes[color]]: true
-            });
-          } else {
-            listItemClasses = classNames({
-              [" " + classes[color]]: activeRoute(prop.layout + prop.path)
-            });
-          }
+          let listItemClasses = classNames({
+            [" " + classes[color]]: activeRoute(prop.layout + prop.path)
+          });
           const whiteFontClasses = classNames({
             [" " + classes.whiteFont]: activeRoute(prop.layout + prop.path)
           });
