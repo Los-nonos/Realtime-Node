@@ -3,6 +3,7 @@ import {inject, injectable} from "inversify";
 import SubscribeToChannelAction from "../Actions/Channels/SubscribeToChannelAction";
 import StoreMessageAction from "../Actions/Messages/StoreMessageAction";
 import GetGeneralChannelAction from "../Actions/Channels/GetGeneralChannelAction";
+import GetChannelsOfUserAction from "../Actions/Channels/GetChannelsOfUserAction";
 
 
 @injectable()
@@ -15,16 +16,20 @@ class Sockets {
   private storeMessage: StoreMessageAction;
   // @ts-ignore
   private generalChannel: GetGeneralChannelAction;
+  // @ts-ignore
+  private getChannelsOfUser: GetChannelsOfUserAction;
 
   constructor(
     @inject(StoreMessageAction) storeMessage: StoreMessageAction,
     @inject(SubscribeToChannelAction) subscribeToChannel: SubscribeToChannelAction,
-    @inject(GetGeneralChannelAction) generalChannel: GetGeneralChannelAction
+    @inject(GetGeneralChannelAction) generalChannel: GetGeneralChannelAction,
+    @inject(GetChannelsOfUserAction) getChannelsOfUser: GetChannelsOfUserAction,
   ) {
 
     this.subscribeToChannel = subscribeToChannel;
     this.storeMessage = storeMessage;
     this.generalChannel = generalChannel;
+    this.getChannelsOfUser = getChannelsOfUser;
   }
 
   public up(http: any) {
@@ -44,6 +49,8 @@ class Sockets {
 
 
     socket.on('subscribe', (room) => this.Subscribe(room, socket, context));
+
+    socket.on('on-connection', (userId) => this.subscribeToChannelsOfUser(userId, socket, context));
 
     socket.on('new-message', (data) => this.NewMessage(data, context));
   }
@@ -70,6 +77,16 @@ class Sockets {
 
     console.log('sending room post', data.room);
 
+  }
+
+  private subscribeToChannelsOfUser(userId: any, socket: any, context: any) {
+    context.getChannelsOfUser.execute(userId).then(result => {
+      result.map(channel => {
+        socket.join(channel.id);
+      })
+    }).catch(error => {
+      socket.emit('error', 'An error has occurred' + error);
+    })
   }
 }
 

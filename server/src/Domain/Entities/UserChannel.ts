@@ -1,13 +1,14 @@
 import User from "./User";
 import Channel from "./Channel";
-import {PrimaryGeneratedColumn} from "typeorm";
+import {Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 
+@Entity('user_channels')
 class UserChannel {
   @PrimaryGeneratedColumn()
   public id: number;
-  //@ManyToOne(_type => User)
+  @ManyToOne(_type => User, _user => _user.channels)
   public user: User;
-  //@ManyToOne(_type => Channel)
+  @ManyToOne(_type => Channel, _channel => _channel.userChannels)
   public channel: Channel;
 
   public constructor(user: User, channel: Channel) {

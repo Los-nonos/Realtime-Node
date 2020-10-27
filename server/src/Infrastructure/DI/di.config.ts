@@ -27,6 +27,8 @@ import StoreMessageHandler from "../../Application/Commands/Handler/Messages/Sto
 import GetGeneralChannelHandler from "../../Application/Queries/Handler/Channels/GetGeneralChannelHandler";
 import {MessageRepository} from "../../Domain/Interfaces/Repositories/MessageRepository";
 import MysqlMessageRepository from "../Persistence/Repositories/MysqlMessageRepository";
+import GetChannelsOfUserAction from "../../API/Broadcast/Actions/Channels/GetChannelsOfUserAction";
+import GetChannelsOfUserHandler from "../../Application/Queries/Handler/Channels/GetChannelsOfUserHandler";
 
 const DIContainer = new Container();
 
@@ -45,6 +47,7 @@ DIContainer.bind<StoreUserAction>(StoreUserAction).toSelf();
 DIContainer.bind<StoreMessageAction>(StoreMessageAction).toSelf();
 DIContainer.bind<GetGeneralChannelAction>(GetGeneralChannelAction).toSelf();
 DIContainer.bind<SubscribeToChannelBroadcastAction>(SubscribeToChannelBroadcastAction).toSelf();
+DIContainer.bind<GetChannelsOfUserAction>(GetChannelsOfUserAction).toSelf();
 
 /**
  * Adapters
@@ -62,6 +65,8 @@ DIContainer.bind<LoginHandler>(LoginHandler).toSelf();
 DIContainer.bind<StoreUserHandler>(StoreUserHandler).toSelf();
 DIContainer.bind<StoreMessageHandler>(StoreMessageHandler).toSelf();
 DIContainer.bind<GetGeneralChannelHandler>(GetGeneralChannelHandler).toSelf();
+DIContainer.bind<GetChannelsOfUserHandler>(GetChannelsOfUserHandler).toSelf();
+
 /**
  * Services
  */

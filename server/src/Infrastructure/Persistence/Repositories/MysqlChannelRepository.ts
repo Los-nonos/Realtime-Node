@@ -33,6 +33,18 @@ class MysqlChannelRepository extends TypeRepository implements ChannelRepository
     return await this.repository(Channel).save(channel);
   }
 
+  public async findByUserId(userId: number): Promise<Channel[]> {
+    const queryBuilder = this.repository(Channel).createQueryBuilder('channel');
+
+    queryBuilder
+      .leftJoinAndSelect('channel.userChannels', 'userChannel')
+      .leftJoinAndSelect('userChannel.user', 'user');
+
+    queryBuilder.andWhere('user.id = :id', {id: userId});
+
+    return await queryBuilder.getMany();
+  }
+
 }
 
 export default MysqlChannelRepository;

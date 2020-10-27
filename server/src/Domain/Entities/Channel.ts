@@ -14,6 +14,7 @@ class Channel {
   public name: string;
   @Column()
   public private: boolean;
+  @OneToMany(_type => UserChannel, userChannel => userChannel.channel)
   public userChannels: Array<UserChannel>;
   @OneToMany(_type => Message, message => message.channel)
   public messages: Array<Message>;
@@ -63,12 +64,7 @@ class Channel {
   }
 
   private setUsers(users: Array<User>) {
-    if (!this.userChannels) {
-      this.userChannels = [];
-    }
-
     if (!users) {
-      this.userChannels = [];
       return;
     }
 

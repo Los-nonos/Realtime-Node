@@ -1,5 +1,7 @@
 import React from 'react';
 import ClientSocket from 'socket.io-client';
+import ChatEntry from "../../components/molecules/Chat/ChatEntry";
+import { connect } from 'react-redux';
 
 class Index extends React.Component {
     constructor(props) {
@@ -11,10 +13,12 @@ class Index extends React.Component {
 
     componentDidMount() {
         this.socket = new ClientSocket(process.env.API_URL);
+        this.socket.emit('on-connection', this.props.userData.id);
+
         this.socket.on('new-message', (messages) => {
-          this.setState(oldState => {
-              return {messages: oldState.messages.concat(messages)}
-          });
+            this.setState(oldState => {
+                return {messages: oldState.messages.concat(messages)}
+            });
         });
 
         this.socket.on('general', (messages) => {
@@ -32,11 +36,23 @@ class Index extends React.Component {
 
     render() {
         return (
-            <div>
-                Hola
-            </div>
+            <>
+                <div>
+                    {this.state.messages.map(message => {
+                        return <ChatEntry message={message}/>
+                    })}
+                </div>
+                <form>
+                    <input name={'content'} type={'text'} placeholder={'Escribe tu mensaje aquí...'} />
+                    <input name={'channel'} type={'text'} placeholder={'A que canal?'} />
+                </form>
+            </>
         );
     }
 }
 
-export default Index;
+const mapStateToProps = state => {
+    return { ...state.login, ...state.generalReducer };
+}
+
+export default connect(mapStateToProps)(Index);
