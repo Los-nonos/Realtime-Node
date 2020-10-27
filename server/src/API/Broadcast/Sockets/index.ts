@@ -66,17 +66,14 @@ class Sockets {
 
   private NewMessage(data, context) {
     context.storeMessage.execute(data).then(result => {
-      if (result.getChannel().isPrivate()) {
-        context.io.sockets.emit('general', result.getChannelMessages());
+      if (!result.isPrivate()) {
+        context.io.emit('general', result.getMessages());
       } else {
-        context.io.sockets.in(result.getChannelName()).emit('private-message', result.getChannelMessages());
+        context.io.in(result.getId()).emit('private-message', result.getMessages());
       }
     }).catch(error => {
       console.error('An error has ocurred', error);
     });
-
-    console.log('sending room post', data.room);
-
   }
 
   private subscribeToChannelsOfUser(userId: any, socket: any, context: any) {
