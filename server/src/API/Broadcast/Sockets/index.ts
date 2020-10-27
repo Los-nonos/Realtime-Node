@@ -41,10 +41,10 @@ class Sockets {
   private onConnection(socket, context) {
     console.log('Alguien se ha conectado con Sockets');
     context.generalChannel.execute().then(result => {
-      socket.emit('general', result.getMessages());
+      socket.emit('messages', result.getMessages());
     }).catch(error => {
       console.error(error);
-      socket.emit('general', error);
+      socket.emit('error', error);
     });
 
 
@@ -60,15 +60,16 @@ class Sockets {
     context.subscribeToChannel.execute(room).then(channel => {
       socket.join(channel);
     }).catch(error => {
-      socket.emit('An error has occurred', error);
+      socket.emit('error', 'An error has occurred' + error);
     });
   }
 
   private NewMessage(data, context) {
     context.storeMessage.execute(data).then(result => {
       if (!result.isPrivate()) {
-        context.io.emit('general', result.getMessages());
+        context.io.emit('messages', result.getMessages());
       } else {
+        console.log('hello, sending private message');
         context.io.in(result.getId()).emit('private-message', result.getMessages());
       }
     }).catch(error => {
@@ -78,12 +79,14 @@ class Sockets {
 
   private subscribeToChannelsOfUser(userId: any, socket: any, context: any) {
     context.getChannelsOfUser.execute(userId).then(result => {
+      console.log(result.length);
       result.map(channel => {
         socket.join(channel.id);
-      })
+      });
+      socket.emit('general', {channels: result});
     }).catch(error => {
       socket.emit('error', 'An error has occurred' + error);
-    })
+    });
   }
 }
 

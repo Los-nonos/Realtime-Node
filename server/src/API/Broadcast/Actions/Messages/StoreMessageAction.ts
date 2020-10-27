@@ -2,6 +2,7 @@ import {inject, injectable} from "inversify";
 import StoreMessageHandler from "../../../../Application/Commands/Handler/Messages/StoreMessageHandler";
 import StoreMessageAdapter from "../../Adapters/Messages/StoreMessageAdapter";
 import GetGeneralChannelHandler from "../../../../Application/Queries/Handler/Channels/GetGeneralChannelHandler";
+import GetGeneralChannelQuery from "../../../../Application/Queries/Query/Channels/GetGeneralChannelQuery";
 
 @injectable()
 class StoreMessageAction {
@@ -23,7 +24,7 @@ class StoreMessageAction {
 
     await this.handler.execute(command);
 
-    return await this.generalHandler.execute(null);
+    return await this.generalHandler.execute(new GetGeneralChannelQuery(data.channelId));
   }
 }
 

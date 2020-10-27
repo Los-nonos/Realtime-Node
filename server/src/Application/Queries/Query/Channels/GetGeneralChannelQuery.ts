@@ -1,5 +1,11 @@
 class GetGeneralChannelQuery {
-  constructor() {
+  private channelId?: number;
+  constructor(channelId?: number) {
+    this.channelId = channelId;
+  }
+
+  public getChannelId() {
+    return this.channelId;
   }
 }
 

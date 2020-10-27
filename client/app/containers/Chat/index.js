@@ -9,6 +9,10 @@ class Index extends React.Component {
         super(props);
         this.state = {
             messages: [],
+            error: {},
+            data: {},
+            channel: 1,
+            content: '',
         };
     }
 
@@ -16,23 +20,26 @@ class Index extends React.Component {
         this.socket = new ClientSocket(process.env.API_URL);
         this.socket.emit('on-connection', this.props.userData.id);
 
-        /*this.socket.on('new-message', (messages) => {
-            this.setState(oldState => {
-                return {messages: oldState.messages.concat(messages)}
-            });
-        });*/
-
-        this.socket.on('general', (messages) => {
-            this.setState(oldState => {
-                return {messages: oldState.messages.concat(messages)}
+        this.socket.on('general', data => {
+            this.setState({
+                data
             });
         });
+
+        this.socket.on('messages', messages => {
+            this.setState({messages});
+        })
 
         this.socket.on('private-message', (messages) => {
-            this.setState(oldState => {
-                return {messages: oldState.messages.concat(messages)}
+            console.log(messages);
+            this.setState({
+                messages
             });
         });
+
+        this.socket.on('error', error => {
+            this.setState({error});
+        })
     }
 
     sendMessage = (e) => {
@@ -45,21 +52,35 @@ class Index extends React.Component {
             [field]: formElements.namedItem(field).value
         })).reduce((current, next) => ({...current, ...next}));
 
-        data = {...data, channelId: 1, userId: 1};
+        data = {...data, channelId: this.state.channel, userId: 1};
         this.socket.emit('new-message', data);
+        this.setState(oldState => {
+            return {...oldState, content: ''};
+        });
     };
 
     render() {
         return (
             <>
+                {this.state.error ? this.state.error.message : ''}
+                <select onChange={(data) => {
+                    this.setState({channel: data.target.value})
+                }}>
+                    {this.state.data.channels ? this.state.data.channels.map(channel => {
+                        return (
+                            <option value={channel.id}>{channel.name}</option>
+                        )
+                    }) : null}
+                </select>
                 <div>
                     {this.state.messages.map(message => {
                         return <ChatEntry message={message}/>
                     })}
                 </div>
                 <form onSubmit={this.sendMessage}>
-                    <input name={'content'} type={'text'} placeholder={'Escribe tu mensaje aquí...'}/>
-                    <input name={'channel'} type={'text'} placeholder={'A que canal?'}/>
+                    <input name={'content'} value={this.state.content} onChange={(data) => {
+                        this.setState({content: data.target.value});
+                    }} type={'text'} placeholder={'Escribe tu mensaje aquí...'}/>
                     <input value={'Enviar'} type={'submit'}/>
                 </form>
             </>

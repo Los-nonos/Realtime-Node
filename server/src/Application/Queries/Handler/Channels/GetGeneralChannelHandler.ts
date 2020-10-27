@@ -11,7 +11,11 @@ class GetGeneralChannelHandler {
     this.channelRepository = channelRepository;
   }
 
-  public async execute(_query: GetGeneralChannelQuery): Promise<Channel> {
+  public async execute(query: GetGeneralChannelQuery): Promise<Channel> {
+    if (query.getChannelId()) {
+      return await this.channelRepository.findOneById(query.getChannelId());
+    }
+
     return await this.channelRepository.findOneByName('general');
   }
 }
