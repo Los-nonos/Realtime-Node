@@ -7,13 +7,16 @@ import {injectable} from "inversify";
 @injectable()
 class MysqlChannelRepository extends TypeRepository implements ChannelRepository {
   public async findOneByName(name: string): Promise<Channel> {
-    const channel = await this.repository(Channel).findOne({name});
+    const channel = await this.repository(Channel).find({
+      where: {name},
+      relations: ['messages', 'messages.user']
+    });
 
     if (!channel) {
       throw new EntityNotFound(`Channel with name: ${name} not found`);
     }
 
-    return channel;
+    return channel[0];
   }
 
   public async findOneById(id: number): Promise<Channel> {

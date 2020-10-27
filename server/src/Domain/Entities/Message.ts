@@ -1,14 +1,14 @@
 import User from "./User";
 import Channel from "./Channel";
-import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 
-@Entity()
+@Entity('messages')
 class Message {
   @PrimaryGeneratedColumn()
   public id: number;
-  //@ManyToOne(_type => User)
+  @ManyToOne(_type => User)
   public user: User;
-  //@ManyToOne(_type => Channel)
+  @ManyToOne(_type => Channel)
   public channel: Channel;
   @Column()
   public content: string;

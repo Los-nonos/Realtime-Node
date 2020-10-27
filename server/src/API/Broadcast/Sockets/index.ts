@@ -38,6 +38,7 @@ class Sockets {
     context.generalChannel.execute().then(result => {
       socket.emit('general', result.getMessages());
     }).catch(error => {
+      console.error(error);
       socket.emit('general', error);
     });
 

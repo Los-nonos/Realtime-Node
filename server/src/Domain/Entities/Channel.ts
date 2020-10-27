@@ -2,7 +2,7 @@
 import UserChannel from "./UserChannel";
 //import ChannelIsPrivate from "../../Application/Exception/ChannelIsPrivated";
 import Message from "./Message";
-import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import User from "./User";
 import ChannelIsPrivate from "../../Application/Exception/ChannelIsPrivated";
 
@@ -15,6 +15,7 @@ class Channel {
   @Column()
   public private: boolean;
   public userChannels: Array<UserChannel>;
+  @OneToMany(_type => Message, message => message.channel)
   public messages: Array<Message>;
 
   public constructor(
