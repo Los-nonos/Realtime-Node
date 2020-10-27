@@ -4,6 +4,8 @@ import SubscribeToChannelAction from "../Actions/Channels/SubscribeToChannelActi
 import StoreMessageAction from "../Actions/Messages/StoreMessageAction";
 import GetGeneralChannelAction from "../Actions/Channels/GetGeneralChannelAction";
 import GetChannelsOfUserAction from "../Actions/Channels/GetChannelsOfUserAction";
+import INTERFACES from "../../../Infrastructure/DI/interfaces.types";
+import {TokenService} from "../../../Domain/Interfaces/Services/TokenService";
 
 
 @injectable()
@@ -18,18 +20,22 @@ class Sockets {
   private generalChannel: GetGeneralChannelAction;
   // @ts-ignore
   private getChannelsOfUser: GetChannelsOfUserAction;
+  // @ts-ignore
+  private tokenService: TokenService;
 
   constructor(
     @inject(StoreMessageAction) storeMessage: StoreMessageAction,
     @inject(SubscribeToChannelAction) subscribeToChannel: SubscribeToChannelAction,
     @inject(GetGeneralChannelAction) generalChannel: GetGeneralChannelAction,
     @inject(GetChannelsOfUserAction) getChannelsOfUser: GetChannelsOfUserAction,
+    @inject(INTERFACES.ITokenService) tokenService: TokenService
   ) {
 
     this.subscribeToChannel = subscribeToChannel;
     this.storeMessage = storeMessage;
     this.generalChannel = generalChannel;
     this.getChannelsOfUser = getChannelsOfUser;
+    this.tokenService = tokenService;
   }
 
   public up(http: any) {
@@ -78,8 +84,8 @@ class Sockets {
   }
 
   private subscribeToChannelsOfUser(userId: any, socket: any, context: any) {
+    userId = context.tokenService.unHashTokenOrFail(userId).userId;
     context.getChannelsOfUser.execute(userId).then(result => {
-      console.log(result.length);
       result.map(channel => {
         socket.join(channel.id);
       });

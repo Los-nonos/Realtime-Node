@@ -2,6 +2,7 @@ import React from 'react';
 import ClientSocket from 'socket.io-client';
 import ChatEntry from "../../components/molecules/Chat/ChatEntry";
 import {connect} from 'react-redux';
+import authStorage from "../../services/localStorage/authStorage";
 
 class Index extends React.Component {
 
@@ -18,7 +19,8 @@ class Index extends React.Component {
 
     componentDidMount() {
         this.socket = new ClientSocket(process.env.API_URL);
-        this.socket.emit('on-connection', this.props.userData.id);
+        const token = authStorage.getSession();
+        this.socket.emit('on-connection', token);
 
         this.socket.on('general', data => {
             this.setState({
